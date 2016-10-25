@@ -50,15 +50,18 @@ def BatchGenerator():
 			img_center_filename = row[0]
 			img_left_filename = row[1]
 			img_right_filename = row[2]
-			
-			img_center = misc.imread(img_center_filename)[:,:,:]
-			img_left = misc.imread(img_left_filename)[:,:,:]
-			img_right = misc.imread(img_right_filename)[:,:,:]
+
+			# Chop off the top half of the image as it is not as useful
+			img_center = misc.imread(img_center_filename)[80:,:,:]
+			img_left = misc.imread(img_left_filename)[80:,:,:]
+			img_right = misc.imread(img_right_filename)[80:,:,:]
 	
 			steering_angle = float(row[3])
 			steering_angle_left = steering_angle + abs(steering_angle)*0.3
 			steering_angle_right = steering_angle - abs(steering_angle)*0.3
-		
+
+
+			# Oversample right turns as our track is currently biased towards turning left
 			num_samples = 1
 			if(steering_angle > 0):
 				num_samples = 3	
